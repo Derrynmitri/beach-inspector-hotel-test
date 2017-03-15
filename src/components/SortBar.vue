@@ -1,12 +1,9 @@
 <template>
 	<div class="sortContainer">
 		<h4 class="title">Sort By</h4>
-		<div class="button-group">
-			<button class="button" @click="$emit('namesort')">Name <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/></button>
-			<button class="button" @click="$emit('citysort')">City <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
-			<button class="button" @click="$emit('pricesort')">Price <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
-			<button class="button" @click="$emit('ratingsort')">Category <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
-		</div>
+		<div class="button-group" v-for="button in buttons">
+			<button :class="{ 'selected' : button.selected }" @click="$emit(button.func), select(button)">{{button.title}} <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/></button>
+			</div>
 	</div>	
 </template>
 
@@ -14,9 +11,24 @@
 	export default {
 		data() {
 			return {
-				selected: 'button'
+				buttons: [
+					{ title:'Category', func: 'ratingsort', selected: false }, 
+					{ title:'Price', func: 'pricesort', selected: false }, 
+					{ title:'City', func: 'citysort', selected: false },  
+					{ title:'Name', func: 'namesort', selected: false }
+				],
 			}
-		}
+		},
+		methods: {
+			select(buttonSelected){
+				this.buttons.forEach(button => {
+					button.selected = false;
+				});
+				this.buttons.forEach(butt => {
+					buttonSelected.selected = (buttonSelected.name == butt.name);
+				});
+			}
+		},
 	}
 </script>
 
@@ -44,7 +56,7 @@
 	{
 		display: inline-block;
 		float: right;
-		margin: 12px 15px;
+		margin: 12px 5px;
 	}
 	button
 	{

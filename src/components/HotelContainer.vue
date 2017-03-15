@@ -1,11 +1,13 @@
 <template>
 	<div class="hotelContainer">
-		<div class="imageContainer">
-			<slot name="image"></slot>
-		</div>
-		<div class="contentContainer">
-			<slot name="content"></slot>
-		</div>
+		<slot name="link">
+			<div class="imageContainer">
+				<slot name="image"></slot>
+			</div>
+			<div class="contentContainer">
+				<slot name="content"></slot>
+			</div>
+		</slot>
 	</div>	
 </template>
 
