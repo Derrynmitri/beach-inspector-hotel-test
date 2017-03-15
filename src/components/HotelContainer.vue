@@ -23,9 +23,9 @@
 		background : #f6f6f6;
 		color: #000;
 		width: 550px;
-		height: 200px;
+		height: 210px;
 		display: block;
-		margin-bottom: 10px;
+		border-bottom: 2px solid #d9d9d9;
 	}
 	.imageContainer 
 	{
@@ -33,6 +33,7 @@
 		float: left;
 		width: auto;
 		height: 200px;
+		padding-top: 5px;
 	}
 	.contentContainer
 	{

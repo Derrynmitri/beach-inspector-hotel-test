@@ -11,7 +11,8 @@
   "dependencies": {
     "axios": "^0.15.3",
     "eslint": "^2.13.1",
-    "vue": "^2.2.1"
+    "vue": "^2.2.1",
+    "vue-star-rating": "^1.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
