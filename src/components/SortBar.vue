@@ -2,17 +2,21 @@
 	<div class="sortContainer">
 		<h4 class="title">Sort By</h4>
 		<div class="button-group">
-			<button class="selected">Name <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/></button>
-			<button class="button">City <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
-			<button class="button">Price <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
-			<button class="button">Rating <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
+			<button class="button" @click="$emit('namesort')">Name <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/></button>
+			<button class="button" @click="$emit('citysort')">City <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
+			<button class="button" @click="$emit('pricesort')">Price <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
+			<button class="button" @click="$emit('ratingsort')">Category <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;" /></button>
 		</div>
 	</div>	
 </template>
 
 <script>
 	export default {
-		
+		data() {
+			return {
+				selected: 'button'
+			}
+		}
 	}
 </script>
 
@@ -48,7 +52,7 @@
 		color: #fff;
 		background-color: #444444;
 		height: 25px;
-		width: 75px;
+		width: 80px;
 		border-radius: 2px;
 	}
 	button.selected
@@ -58,5 +62,6 @@
 	button:hover 
 	{
 		cursor: pointer;
+		background-color: #0097d9;
 	}
 </style>

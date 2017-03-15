@@ -2,27 +2,30 @@
   <div id="app">
   	<navigation />
   	<div class="content">
-  		<sortbar />
-  		<ul>
-  			<hotels v-for="sample in samples" :key="sample.id">
-  				<img slot="image" :src="sample.image" :alt="sample.name">
-  				<div slot="content" class="hotel">
-  					<div class="hotel__title">{{sample.name}}</div>
-  					<div class="hotel__city">{{sample.city}}</div>
-  					<div class="hotel__price">€ {{sample.price}}.00</div>
-  					<div class="hotel__category">
-  						<star-rating 
-	  						:rating="sample.category" 
-	  						:read-only="true" 
-	  						:increment="0.5" 
-	  						:star-size="20" 
-	  						:show-rating="false"
-	  						active-color="#0097d9"
-	  					/>
-  					</div>
-  				</div>
-  			</hotels>
-  		</ul>
+  		<sortbar 
+  			@namesort="nameSort"
+  			@citysort="citySort"
+  			@pricesort="priceSort"
+  			@ratingsort="ratingSort"
+  		/>
+		<hotels v-for="sample in samples" :key="sample.id">
+			<img slot="image" :src="sample.image" :alt="sample.name">
+			<div slot="content" class="hotel">
+				<div class="hotel__title">{{sample.name}}</div>
+				<div class="hotel__city">{{sample.city}}</div>
+				<div class="hotel__price"><strong>€</strong>{{sample.price}}.00</div>
+				<div class="hotel__category">
+					<star-rating 
+						:rating="sample.category" 
+						:read-only="true" 
+						:increment="0.5" 
+						:star-size="20" 
+						:show-rating="false"
+						active-color="#0097d9"
+					/>
+				</div>
+			</div>
+		</hotels>
   	</div>
   </div>
 </template>
@@ -39,7 +42,42 @@ export default {
   components: { Navigation, Hotels, StarRating,Sortbar },
   data() {
   	return {
-  		samples
+  		samples,
+  		message: true
+  	}
+  },
+  methods: {
+  	nameSort(){
+  		this.samples.sort(function(a, b) {
+  			const nameA=a.name.toLowerCase();
+  			const nameB=b.name.toLowerCase();
+  			if (nameA < nameB)
+  			        return -1 
+  			    if (nameA > nameB)
+  			        return 1
+  			    return 0
+  		})
+  	},
+  	citySort(){
+  		this.samples.sort(function(a, b) {
+  			const cityA=a.city.toLowerCase();
+  			const cityB=b.city.toLowerCase();
+  			if (cityA < cityB)
+  			        return -1 
+  			    if (cityA > cityB)
+  			        return 1
+  			    return 0
+  		})
+  	},
+  	priceSort() {
+  		this.samples.sort(function(a, b){
+    		return a.price-b.price
+		})
+  	},
+  	ratingSort() {
+  		this.samples.sort(function(a, b){
+    		return b.category-a.category
+		})
   	}
   },
   mounted() {

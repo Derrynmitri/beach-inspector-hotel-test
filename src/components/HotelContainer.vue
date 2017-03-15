@@ -25,6 +25,7 @@
 		width: 550px;
 		height: 210px;
 		display: block;
+		margin-left: 10px;
 		border-bottom: 2px solid #d9d9d9;
 	}
 	.imageContainer 
