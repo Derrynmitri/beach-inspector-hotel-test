@@ -2,31 +2,34 @@
   <div id="app">
   	<navigation />
   	<div class="content">
-  		<sortbar 
-  			@namesort="nameSort"
-  			@citysort="citySort"
-  			@pricesort="priceSort"
-  			@ratingsort="ratingSort"
-  		/>
-		<hotels v-for="sample in samples" :key="sample.id">
-			<img slot="image" :src="sample.image" :alt="sample.name">
-			<div slot="content" class="hotel">
-				<div class="hotel__title">{{sample.name}}</div>
-				<div class="hotel__city">{{sample.city}}</div>
-				<div class="hotel__price"><strong>€</strong>{{sample.price}}.00</div>
-				<div class="hotel__category">
-					<star-rating 
-						:rating="sample.category" 
-						:read-only="true" 
-						:increment="0.5" 
-						:star-size="20" 
-						:show-rating="false"
-						active-color="#0097d9"
-					/>
+	  	<div class="contentHotels">
+	  		<sortbar 
+	  			@namesort="nameSort"
+	  			@citysort="citySort"
+	  			@pricesort="priceSort"
+	  			@ratingsort="ratingSort"
+	  		/>
+			<hotels v-for="sample in samples" :key="sample.id">
+				<img slot="image" :src="sample.image" :alt="sample.name">
+				<div slot="content" class="hotel">
+					<div class="hotel__title">{{sample.name}}</div>
+					<div class="hotel__city">{{sample.city}}</div>
+					<div class="hotel__price"><strong>€</strong>{{sample.price}}.00</div>
+					<div class="hotel__category">
+						<star-rating 
+							:rating="sample.category" 
+							:read-only="true" 
+							:increment="0.5" 
+							:star-size="20" 
+							:show-rating="false"
+							active-color="#0097d9"
+						/>
+					</div>
 				</div>
-			</div>
-		</hotels>
-  	</div>
+			</hotels>
+	  	</div>
+	  	Hello
+	  </div>
   </div>
 </template>
 
@@ -39,11 +42,11 @@ import StarRating from 'vue-star-rating'
 import samples from './assets/hotels.json'
 export default {
   name: 'app',
-  components: { Navigation, Hotels, StarRating,Sortbar },
+  components: { Navigation, Hotels, StarRating, Sortbar },
   data() {
   	return {
   		samples,
-  		message: true
+  		message: true,
   	}
   },
   methods: {
@@ -98,10 +101,20 @@ export default {
 		margin: 0px;
 		background : #f6f6f6;
 	}
-	.content 
+	.content
 	{
+		width: 100%;
+		display: block;
+	}
+	.contentHotels 
+	{
+		display: inline-block;
 		width: 600px;
 		border-right: 2px solid #444444;
+	}
+	.contentMap
+	{
+		display: inline-block;
 	}
 	.hotel 
 	{

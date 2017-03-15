@@ -11,8 +11,10 @@
   "dependencies": {
     "axios": "^0.15.3",
     "eslint": "^2.13.1",
-    "vue": "^2.2.1",
-    "vue-star-rating": "^1.2.2"
+    "marker-clusterer-plus": "^2.1.4",
+    "vue": "^2.2.4",
+    "vue-star-rating": "^1.2.2",
+    "vue2-google-maps": "^0.6.4"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
