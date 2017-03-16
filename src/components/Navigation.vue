@@ -29,4 +29,10 @@
 		display: inline-block;
 		margin: 15px 0 0 15px;
 	}
+	@media only screen and (max-width: 767px) {
+		.headerContainer 
+		{
+			height: 50px;
+		}
+	}
 </style>

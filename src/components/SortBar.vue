@@ -1,10 +1,14 @@
 <template>
 	<div class="sortContainer">
 		<h4 class="title">Sort By</h4>
-		<div class="button-group" v-for="button in buttons">
-			<button :class="{ 'selected' : button.selected }" @click="$emit(button.func), select(button)">{{button.title}} <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/></button>
-			</div>
-	</div>	
+		<div class="button-group">
+			<button  v-for="button in buttons" :class="{ 'selected' : button.selected }" @click="$emit(button.func), select(button)">{{button.title}} <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/></button>
+		</div>
+		<div class="mobileDisplay">
+			<button type="button" class="button" @click="$emit('showlist')">List</button>
+			<button type="button" class="button" @click="$emit('showmap')">Map</button>
+		</div>	
+	</div>
 </template>
 
 <script>
@@ -12,10 +16,10 @@
 		data() {
 			return {
 				buttons: [
-					{ title:'Category', func: 'ratingsort', selected: false }, 
-					{ title:'Price', func: 'pricesort', selected: false }, 
+					{ title:'Name', func: 'namesort', selected: false },
 					{ title:'City', func: 'citysort', selected: false },  
-					{ title:'Name', func: 'namesort', selected: false }
+					{ title:'Price', func: 'pricesort', selected: false }, 
+					{ title:'Category', func: 'ratingsort', selected: false } 
 				],
 			}
 		},
@@ -75,5 +79,44 @@
 	{
 		cursor: pointer;
 		background-color: #0097d9;
+	}
+	.mobileDisplay 
+	{
+		display: none;
+	}
+	@media only screen and (max-width: 767px) {
+		.sortContainer 
+		{
+			height: auto;
+			display: block;
+			margin: -15px 0px 0 0;
+			padding: 10px 0px 0px 0px;
+		}
+		.title
+		{
+			display: block;
+			margin: 15px 0px 0px 10px;
+		}
+		.button-group
+		{
+			display: block;
+			height: auto;
+			overflow: hidden;
+			float: left;
+			margin: 12px 5px;
+		}
+		.mobileDisplay 
+		{
+			display: block;
+			padding: 10px;
+			background: #0097d9;
+			clear: both;
+			text-align: center;
+		}
+		button
+		{
+			width: 75px;
+			padding: 0px;
+		}
 	}
 </style>

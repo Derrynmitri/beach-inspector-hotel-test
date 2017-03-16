@@ -8,10 +8,12 @@
 	  			@citysort="citySort"
 	  			@pricesort="priceSort"
 	  			@ratingsort="ratingSort"
+	  			@showmap="showMap"
+	  			@showlist="showList"
 	  		/>
-			<hotels v-for="sample in samples" :key="sample.id">
+			<hotels v-for="sample in samples" :key="sample.id" v-if="displayList">
 				<a slot="link" :href="sample.deeplink" target="_blank">
-					<img slot="image" :src="sample.image" :alt="sample.name" />
+					<img slot="image" :src="sample.image" :alt="sample.name" width="50%" />
 					<div slot="content" class="hotel">
 						<div class="hotel__title">{{sample.name}}</div>
 						<div class="hotel__city">{{sample.city}}</div>
@@ -30,8 +32,8 @@
 				</a>
 			</hotels>
 	  	</div>
-	  	<div class="contentMap">
-		  	<google-map :center="startPos" :zoom="12" class="mapContainer" @click="infoWinOpen=false">
+	  	<div class="contentMap" v-if="displayMap">
+		  	<google-map :center="startPos" :zoom="10" class="mapContainer" @click="infoWinOpen=false">
 			<gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" :content="infoContent" @closeclick="infoWinOpen=false" />
 	  			  	<map-marker
 	  			       v-for="m,i in startMarker"
@@ -74,7 +76,9 @@
 		          width: 0,
 		          height: -35
 		        }
-		      },
+	        },
+	        displayMap: true,
+	        displayList: true,
 	  	}
 	  },
 	  methods: {
@@ -111,16 +115,24 @@
 			})
 	  	},
 	  	toggleInfoWindow(marker, idx) {
-	            this.infoWindowPos = marker.position;
-	            this.infoContent = marker.name;
-	            if (this.currentMidx == idx) {
-	              this.infoWinOpen = !this.infoWinOpen;
-	            }
-	            else {
-	              this.infoWinOpen = true;
-	              this.currentMidx = idx;
-	            }
-	      }
+            this.infoWindowPos = marker.position;
+            this.infoContent = marker.name;
+            if (this.currentMidx == idx) {
+              this.infoWinOpen = !this.infoWinOpen;
+            }
+            else {
+              this.infoWinOpen = true;
+              this.currentMidx = idx;
+            }
+	    },
+	    showMap() {
+	    	this.displayMap = true;
+	    	this.displayList = false;
+	    },
+	    showList() {
+	    	this.displayMap = false;
+	    	this.displayList = true;
+	    },
 	  },
 	  computed: {
 	  	startMarker() {
@@ -182,7 +194,7 @@
 		float: left;
 		height: 100%;
 		overflow: hidden;
-		width: calc(100% - 600px);;
+		width: calc(100% - 600px);
 	}
 	.mapContainer
 	{
@@ -196,6 +208,7 @@
 	    display: inline-block;
 	    vertical-align: top;
 	    padding: 20px;
+	    width: 35%;
 	}
 	.hotel__title
 	{
@@ -214,5 +227,52 @@
 		font-size: 14px;
 		margin-bottom: 5px;
 		margin-bottom: 10px;
+	}
+	@media only screen and (max-width: 767px) {
+		.contentHotels 
+		{
+			display: block;
+			width: 100%;
+			height: 100%;
+			float: left;
+			border-right: none;
+			overflow: auto;
+		}
+		.contentMap
+		{
+			display: block;
+			float: left;
+			height: 100%;
+			position: fixed;
+			top: 175px;
+			width: 100%;
+		}
+		.hotel 
+		{
+			font-size: 15px;
+		    color: #595959;
+		    display: inline-block;
+		    vertical-align: top;
+		    padding: 5px 20px;
+		    width: 35%;
+		}
+		.hotel__title
+		{
+			font-weight: bold;
+			font-size: 16px;
+			color: #0097d9;
+			margin-bottom: 10px;
+		}
+		.hotel__city
+		{
+			font-style: italic;
+			margin-bottom: 10px;
+		}
+		.hotel__price
+		{
+			font-size: 14px;
+			margin-bottom: 5px;
+			margin-bottom: 10px;
+		}	
 	}
 </style>

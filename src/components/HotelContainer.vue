@@ -45,4 +45,15 @@
 		width: auto;
 		height: auto;
 	}
+	@media only screen and (max-width: 767px) {
+		.hotelContainer 
+		{
+			width: 97%;
+			height: 145px;
+		}
+		.imageContainer 
+		{
+			
+		}
+	}
 </style>
