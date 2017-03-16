@@ -1,40 +1,47 @@
 <template>
   <div id="app">
   	<navigation />
-  	<div class="content">
-	  	<div class="contentHotels">
-	  		<sortbar 
-	  			@namesort="nameSort"
-	  			@citysort="citySort"
-	  			@pricesort="priceSort"
-	  			@ratingsort="ratingSort"
-	  			@showmap="showMap"
-	  			@showlist="showList"
-	  		/>
-			<hotels v-for="sample in samples" :key="sample.id" v-if="displayList">
-				<a slot="link" :href="sample.deeplink" target="_blank">
-					<img slot="image" :src="sample.image" :alt="sample.name" width="50%" />
-					<div slot="content" class="hotel">
-						<div class="hotel__title">{{sample.name}}</div>
-						<div class="hotel__city">{{sample.city}}</div>
-						<div class="hotel__price"><strong>€</strong>{{sample.price}}.00</div>
-						<div class="hotel__category">
-							<star-rating 
-								:rating="sample.category" 
-								:read-only="true" 
-								:increment="0.5" 
-								:star-size="20" 
-								:show-rating="false"
-								active-color="#0097d9"
-							/>
+	<div v-if="!samples"><center>An error occured please try again later</center></div>
+  	<div class="content" v-if="samples">
+		  	<div class="contentHotels">
+		  		<sortbar 
+		  			@namesort="nameSort"
+		  			@citysort="citySort"
+		  			@pricesort="priceSort"
+		  			@ratingsort="ratingSort"
+		  			@showmap="showMap"
+		  			@showlist="showList"
+		  		/>
+				<hotels v-for="sample in samples" :key="sample.id" v-if="displayList">
+					<a slot="link" :href="sample.deeplink" target="_blank">
+						<img slot="image" :src="sample.image" :alt="sample.name" width="50%" />
+						<div slot="content" class="hotel">
+							<p class="hotel__title">{{sample.name}}</p>
+							<p class="hotel__city">{{sample.city}}</p>
+							<p class="hotel__price"><strong>€</strong>{{sample.price}}.00</p>
+							<div class="hotel__category">
+								<star-rating 
+									:rating="parseFloat(sample.category)" 
+									:read-only="true" 
+									:increment="0.5" 
+									:star-size="20" 
+									:show-rating="false"
+									active-color="#0097d9"
+								/>
+							</div>
 						</div>
-					</div>
-				</a>
-			</hotels>
-	  	</div>
-	  	<div class="contentMap" v-if="displayMap">
-		  	<google-map :center="startPos" :zoom="10" class="mapContainer" @click="infoWinOpen=false">
-			<gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" :content="infoContent" @closeclick="infoWinOpen=false" />
+					</a>
+				</hotels>
+		  	</div>
+		  	<div class="contentMap" v-if="displayMap">
+			  	<google-map :center="startPos" :zoom="10" class="mapContainer" @click="infoWinOpen=false">
+					<gmap-info-window 
+						:options="infoOptions" 
+						:position="infoWindowPos" 
+						:opened="infoWinOpen" 
+						:content="infoContent" 
+						@closeclick="infoWinOpen=false" 
+					/>
 	  			  	<map-marker
 	  			       v-for="m,i in startMarker"
 	  			       :key="m.name"
@@ -44,8 +51,9 @@
 	  			       @click="toggleInfoWindow(m,i)"
 	  		       >
 	  			   </map-marker>
-	  			  </google-map>
-	  	</div>
+			  	</google-map>
+		  	</div>
+		  </div>
 	  </div>
   </div>
 </template>
@@ -59,8 +67,15 @@
 	import StarRating from 'vue-star-rating'
 	export default {
 	  name: 'app',
-	  components: { Navigation, Hotels, StarRating, Sortbar, 'googleMap': VueGoogleMaps.Map,
-	    'MapMarker': VueGoogleMaps.Marker, 'MapInfoWindow': VueGoogleMaps.MapInfoWindow  },
+	  components: { 
+	  	Navigation, 
+	  	Hotels, 
+	  	StarRating, 
+	  	Sortbar, 
+	  	'googleMap': VueGoogleMaps.Map,
+	    'MapMarker': VueGoogleMaps.Marker, 
+	    'MapInfoWindow': VueGoogleMaps.MapInfoWindow  
+	  },
 	  data() {
 	  	return {
 	  		samples: {},
@@ -91,7 +106,7 @@
 	  			    if (nameA > nameB)
 	  			        return 1
 	  			    return 0
-	  		})
+	  		});
 	  	},
 	  	citySort(){
 	  		this.samples.sort(function(a, b) {
@@ -102,17 +117,17 @@
 	  			    if (cityA > cityB)
 	  			        return 1
 	  			    return 0
-	  		})
+	  		});
 	  	},
 	  	priceSort() {
 	  		this.samples.sort(function(a, b){
 	    		return a.price-b.price
-			})
+			});
 	  	},
 	  	ratingSort() {
 	  		this.samples.sort(function(a, b){
 	    		return b.category-a.category
-			})
+			});
 	  	},
 	  	toggleInfoWindow(marker, idx) {
             this.infoWindowPos = marker.position;
@@ -138,12 +153,17 @@
 	  	startMarker() {
 	  		const testArr = [];
 	  		for (var i = this.samples.length - 1; i >= 0; i--) {
-	  			testArr.push({name: this.samples[i]['name'], position: { lat:this.samples[i]['location'].lat, lng: this.samples[i]['location'].lon}})
+	  			testArr.push({name: this.samples[i]['name'], position: { lat:this.samples[i]['location'].lat, lng: this.samples[i]['location'].lon }})
 	  		}
 	  		return testArr;
 	  	},
 	  	startPos() {
-	  		const testStart = { lat:this.samples[0]['location'].lat, lng: this.samples[0]['location'].lon};
+	  		let testStart = {};
+	  		if (typeof this.samples[0] == 'undefined') {
+	  			testStart = {lat: -26.2041, lng: 28.0473};
+	  		} else {
+	  			testStart ={ lat:this.samples[0]['location'].lat, lng: this.samples[0]['location'].lon };
+	  		}
 	  		return testStart;
 	  	}
 	  },
@@ -152,7 +172,10 @@
 	  	  .then(response => {
 	  	  	this.samples = response.data;
 	  	  	})
-	  	  .catch(error => console.log(error));
+	  	  .catch(error => {
+	  	  	console.log(error);
+	  	  	this.samples = false;
+	  	  });
 	  }
 	}
 </script>
@@ -175,7 +198,7 @@
 	.content
 	{
 		width: 100%;
-		height: 610px;
+		height: calc(100vh - 50px);
 		overflow: hidden;
 		display: block;
 	}
@@ -208,71 +231,55 @@
 	    display: inline-block;
 	    vertical-align: top;
 	    padding: 20px;
-	    width: 35%;
+	    width: 40%;
 	}
 	.hotel__title
 	{
 		font-weight: bold;
 		font-size: 16px;
 		color: #0097d9;
-		margin-bottom: 10px;
+		margin: 0 0 10px 0;
 	}
 	.hotel__city
 	{
 		font-style: italic;
-		margin-bottom: 10px;
+		margin: 0 0 10px 0;
 	}
 	.hotel__price
 	{
 		font-size: 14px;
-		margin-bottom: 5px;
-		margin-bottom: 10px;
+		margin: 0 0 10px 0;
 	}
 	@media only screen and (max-width: 767px) {
 		.contentHotels 
 		{
-			display: block;
 			width: 100%;
 			height: 100%;
 			float: left;
 			border-right: none;
-			overflow: auto;
+			overflow: auto; 
 		}
 		.contentMap
 		{
-			display: block;
-			float: left;
 			height: 100%;
-			position: fixed;
-			top: 175px;
 			width: 100%;
+			margin: 125px 0px 0px -100%;
 		}
 		.hotel 
 		{
-			font-size: 15px;
-		    color: #595959;
-		    display: inline-block;
-		    vertical-align: top;
-		    padding: 5px 20px;
 		    width: 35%;
 		}
 		.hotel__title
 		{
-			font-weight: bold;
-			font-size: 16px;
-			color: #0097d9;
-			margin-bottom: 10px;
+			margin: 0;
 		}
 		.hotel__city
 		{
-			font-style: italic;
-			margin-bottom: 10px;
+			margin: 0;
 		}
 		.hotel__price
 		{
-			font-size: 14px;
-			margin-bottom: 5px;
-			margin-bottom: 10px;
-		}	
+			margin: 0;
+		}
 	}
 </style>

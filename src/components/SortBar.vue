@@ -1,8 +1,15 @@
+<!-- A component used to house all the sorting buttons as well as the mobile display options -->
 <template>
 	<div class="sortContainer">
 		<h4 class="title">Sort By</h4>
 		<div class="button-group">
-			<button  v-for="button in buttons" :class="{ 'selected' : button.selected }" @click="$emit(button.func), select(button)">{{button.title}} <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/></button>
+			<button  
+				v-for="button in buttons" 
+				:class="{ 'selected' : button.selected }" 
+				@click="$emit(button.func), select(button)"
+			>
+				{{button.title}} <i class="fa fa-arrow-down" aria-hidden="true" style="font-size:10px;"/>
+			</button>
 		</div>
 		<div class="mobileDisplay">
 			<button type="button" class="button" @click="$emit('showlist')">List</button>
@@ -38,7 +45,6 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 	.sortContainer 
 	{
 		font-family: 'Roboto', sans-serif;

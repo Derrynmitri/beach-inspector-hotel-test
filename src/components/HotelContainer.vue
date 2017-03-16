@@ -1,3 +1,4 @@
+<!-- A component that receives all the values for the hotel and displays it -->
 <template>
 	<div class="hotelContainer">
 		<slot name="link">
@@ -50,10 +51,6 @@
 		{
 			width: 97%;
 			height: 145px;
-		}
-		.imageContainer 
-		{
-			
 		}
 	}
 </style>
